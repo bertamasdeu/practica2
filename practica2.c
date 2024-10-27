@@ -78,4 +78,33 @@ intOrtogonal( float vect1[N], float vect2[N] ) {
     }
 }
 
+void  Projection( float vect1[N], float vect2[N], float vectres[N] )  {
+    float prodescalar = Scalar(vect1, vect2); 
+    float quadrat = Magnitude(vect2);
+    
+    float projeccioescalar = prodescalar / quadrat; 
+
+    for (int i = 0; i < N; i++) {
+        vectres[i] = projeccioescalar * vect2[i];
+    }
+    return vectres;
+}
+
+float Infininorm(float M[N][N]) {
+    float max_suma = 0.0; 
+    float suma_fila;
+
+    for (int i = 0; i < N; i++) {
+        suma_fila = 0.0;
+        for (int j = 0; j < N; j++) {
+            suma_fila += fabs(M[i][j]);
+        }
+        if (suma_fila > max_suma) {
+            max_suma = suma_fila; 
+        }
+    }
+    return max_suma;
+}
+
+
 int main(){}
