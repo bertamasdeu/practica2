@@ -34,16 +34,18 @@ void InitData(){
 void PrintVect( float vect[N], int from, int numel ) {      // funció per imprimir un número numel d'elements des de la posició from
     int i;                                  // declarem la variable pel bucle
     for (i=from;i<numel;i++){               
-        printf("%f\n ",vect[i]);            // imprimim element per element
+        printf("%f ",vect[i]);            // imprimim element per element
     }
+    printf("\n");
 }
 
 // 2
 void PrintRow( float mat[N][N], int row, int from, int numel ) {    // funció per imprimir un número numel d'elements des de la posició from i una fila row
     int i;                                  // declarem la variable pel bucle
     for (i=from;i<numel;i++){               
-        printf("%f\n ",mat[row][i]);        // imprimim element per element
+        printf("%f ",mat[row][i]);        // imprimim element per element
     }
+    printf("\n");
 }
 
 // 3
@@ -184,4 +186,12 @@ int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) { // f
     return 1;                                           // Indiquem que el mètode de Jacobi s'ha aplicat
 }
 
-int main(){}
+int main(){
+    InitData ();
+    PrintVect (V1,0,10);
+    PrintVect (V1,256,10);
+    PrintVect (V2,0,10);
+    PrintVect (V2,256,10);
+    PrintVect (V3,0,10);
+    PrintVect (V3,256,10);
+}
