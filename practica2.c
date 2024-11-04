@@ -186,12 +186,4 @@ int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) { // f
     return 1;                                           // Indiquem que el mètode de Jacobi s'ha aplicat
 }
 
-int main(){
-    InitData ();
-    PrintVect (V1,0,10);
-    PrintVect (V1,256,10);
-    PrintVect (V2,0,10);
-    PrintVect (V2,256,10);
-    PrintVect (V3,0,10);
-    PrintVect (V3,256,10);
-}
+int main(){}
