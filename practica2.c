@@ -47,10 +47,10 @@ void PrintRow( float mat[N][N], int row, int from, int numel ) {    // funció p
 }
 
 // 3
-void  MultEscalar( float vect[N], float vectres[N], float alfa ) {  // funció per calcular la funció escalar de un vector i una constant
+void MultEscalar( float vect[N], float vectres[N], float alfa ) {  // funció per calcular la funció escalar de un vector i una constant
     int i;                                  // declarem la variable pel bucle
-    for (i=0;i<N;i++){
-        vectres[i]=vect[i]*alfa;            // multipliquem cada element per la constant i la guardem a un vector nou
+    for (i = 0; i < N; i++) {
+        vectres[i] = vect[i] * alfa;            // multipliquem cada element per la constant i la guardem a un vector nou
     }
 }
 
@@ -69,14 +69,13 @@ float Magnitude( float vect[N] ) {          // funció per calcular la magnitud 
     float sumaquadrats = 0;                 
     for (int i = 0; i < N; i++) {
         sumaquadrats += vect[i] * vect[i];  // sumem tots els quadrats amb un bucle en una variable
-    }
-    float resultat = sqrt(sumaquadrats);    // calculem l'arrel quadrada de la variable de la suma total
-    return resultat;                        // retornem el resultat de la funció
+    } 
+    return sqrt(sumaquadrats);                        // retornem l'arrel quadrada de la variable de la suma total
 }
 
 // 6
-intOrtogonal( float vect1[N], float vect2[N] ) {        // funció per determinar si dos vectors són ortogonals
-    float multiplescalar = Scalar( vect1[N], vect2[N] );    // calculem la multiplicació escalar dels dos vectors
+int Ortogonal( float vect1[N], float vect2[N] ) {        // funció per determinar si dos vectors són ortogonals
+    float multiplescalar = Scalar(vect1, vect2);    // calculem la multiplicació escalar dels dos vectors
     if (multiplescalar == 0) {
         return 1;                           // si la multiplicació escalar és 0, els vectors són ortogonals i retornem el valor 1
     } else {
@@ -86,12 +85,11 @@ intOrtogonal( float vect1[N], float vect2[N] ) {        // funció per determina
 
 // 7
 void  Projection( float vect1[N], float vect2[N], float vectres[N] )  { // funció per calcular el vector projecció d'un vector 1 sobre un vector 2 
-    float prodescalar = Scalar(vect1[N], vect2[N]);     // calculem la multiplicació escalar dels dos vectors
-    float quadrat = Magnitude(vect2);                   // calculem la magnitud del segon vector
+    float prodescalar = Scalar(vect1, vect2);     // calculem la multiplicació escalar dels dos vectors
+    float quadrat = Magnitude(vect2) * Magnitude(vect2);            // calculem el quadrat de la magnitud del segon vector
     
     float projeccioescalar = prodescalar / quadrat;     // fem la projecció amb la divisió de la multiplicaicó escalar entre la magnitud
-
-    vectres[i] = MultEscalar (vect2[i], vectres[N], projeccioescalar);  // trobem el resultat de la funció fent la multiplicació escalar de la projecció escalar i el vector 2
+    MultEscalar (vect2, vectres, projeccioescalar);  // trobem el resultat de la funció fent la multiplicació escalar de la projecció escalar i el vector 2
 }
 
 // 8
@@ -112,6 +110,7 @@ float Infininorm(float M[N][N]) {           // funció per calcular la Infini-no
 // 9
 float Onenorm( float M[N][N] ) {            // funció per calcular la norma-ú d'una matriu
     float suma_columna;
+    float max_suma = 0;
     float max_columna = 0;                  // creem les variables temporals necessàries per a fer els pròxims càlculs
     for (int j = 0; j < N; j++) {           // bucle per anar columna per columna
         suma_columna = 0;                   // assignem el valor 0 a la suma de la columna cada cop que la canvia
@@ -157,37 +156,32 @@ void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ) {    // f
    for (int i = 0; i < N; i++) {            // bucle per anar fila per fila a la matriu
         vectres[i] = 0;
         for (int j = 0; j < N; j++) {       // bulce per anar columna per columna a la matriu i element per element al vector
-            vectres[i] += M[i][j] * vect[j];    // definim l'element del vector resultant com 
+            vectres[i] += M[i][j] * vect[j];// definim l'element del vector resultant com 
         }
     }
 }
 
 // 13
-int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) {
-    // Comprovem si la matriu és diagonal dominant
-    if (!DiagonalDom((M)) {
-        return 0; // No es pot aplicar el mètode de Jacobi
+int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) { // funció per a solucionar sistemes d’equacions lineals amb el mètode Jacobi
+    float vector[N] = {0};                  // Creem un vector temporal amb tots els elements a zero per emmagatzemar els valors de cada iteració
+    if (!DiagonalDom(M)) {                  // Comprovem si la matriu és diagonal dominant
+        return 0;                           // No es pot aplicar el mètode de Jacobi
     }
-    float vector[N] = {0};                      // Vector temporal per guardar la solució
-
-    // Iteracions del mètode de Jacobi
-    for (unsigned k = 0; k < iter; k++) {
-        for (int i = 0; i < N; i++) {
-            float suma = 0;
-            for (int j = 0; j < N; j++) {
+    for (unsigned k = 0; k < iter; k++) {               // Apliquem el mètode de Jacobi, bucle per repetir el procés el número indicat
+        for (int i = 0; i < N; i++) {                   // Bucle per anar fila per fila
+            float suma = 0;                             // Definim la suma de la fila 0 al principi del bucle, és a dir, cada canvi de fila
+            for (int j = 0; j < N; j++) {               // Bucle per anar columna per columna
                 if (i != j) {
-                    suma += M[i][j] * vector[j];
+                    suma += M[i][j] * vector[j];        // Afegim a la suma els productes del elements no diagonals amb el valor actual de vector
                 }
             }
-            vectres[i] = (vect[i] - suma) / M[i][i];
+            vectres[i] = (vect[i] - suma) / M[i][i];    // Calculem del nou valor del vector resultat amb la fórmula del mètode de Jacobi
         }
-
-        // Actualitzem vector amb els valors de vectres per la següent iteració
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {                   // Actualitzem el vector amb els nous valors del resultant per a la següent iteració
             vector[i] = vectres[i];
         }
     }
-    return 1;
+    return 1;                                           // Indiquem que el mètode de Jacobi s'ha aplicat
 }
 
 int main(){}
