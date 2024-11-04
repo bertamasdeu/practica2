@@ -42,7 +42,7 @@ void PrintVect( float vect[N], int from, int numel ) {      // funció per impri
 // 2
 void PrintRow( float mat[N][N], int row, int from, int numel ) {    // funció per imprimir un número numel d'elements des de la posició from i una fila row
     int i;                                  // declarem la variable pel bucle
-    for (i=from;i<numel;i++){               
+    for (i=from;i<from+numel;i++){               
         printf("%f ",mat[row][i]);        // imprimim element per element
     }
     printf("\n");
