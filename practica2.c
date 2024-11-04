@@ -33,7 +33,7 @@ void InitData(){
 // 1
 void PrintVect( float vect[N], int from, int numel ) {      // funció per imprimir un número numel d'elements des de la posició from
     int i;                                  // declarem la variable pel bucle
-    for (i=from;i<numel;i++){               
+    for (i=from;i<from+numel;i++){               
         printf("%f ",vect[i]);            // imprimim element per element
     }
     printf("\n");
